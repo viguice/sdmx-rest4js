@@ -38,9 +38,9 @@ service = class Service
   @ECB:
     id: 'ECB'
     name: 'European Central Bank'
-    api: ApiVersion.v1_0_2
-    url: 'http://sdw-wsrest.ecb.europa.eu/service'
-    format: DataFormat.SDMX_JSON_1_0_0_WD
+    api: ApiVersion.v1_4_0
+    url: 'https://data-api.ecb.europa.eu/service'
+    format: DataFormat.SDMX_JSON_1_0_0
     structureFormat: MetadataFormat.SDMX_ML_2_1_STRUCTURE
     schemaFormat: SchemaFormat.XML_SCHEMA
 
@@ -61,8 +61,8 @@ service = class Service
   @EUROSTAT:
     id: 'EUROSTAT'
     name: 'Eurostat'
-    api: ApiVersion.v1_0_2
-    url: 'http://www.ec.europa.eu/eurostat/SDMX/diss-web/rest'
+    api: ApiVersion.v1_4_0
+    url: 'https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/'
 
   @OECD:
     id: 'OECD'
@@ -76,7 +76,6 @@ service = class Service
     api: ApiVersion.v1_0_2
     url: 'http://wits.worldbank.org/API/V1/SDMX/V21/rest'
 
-  @ECB_S: createSecureInstance @ECB
 
   @SDMXGR_S: createSecureInstance @SDMXGR
 
@@ -97,7 +96,7 @@ service = class Service
 
 services = [
   service.BIS
-  service.ECB_S
+  service.ECB
   service.EUROSTAT
   service.OECD_S
   service.SDMXGR_S
