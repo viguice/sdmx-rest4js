@@ -8,7 +8,7 @@ should = require('chai').should()
 describe 'URL Generator for metadata queries', ->
 
   it 'generates a URL for a metadata query', ->
-    expected = "http://sdw-wsrest.ecb.europa.eu/service/codelist/ECB/CL_FREQ/\
+    expected = "https://data-api.ecb.europa.eu/service/codelist/ECB/CL_FREQ/\
     latest?detail=full&references=none"
     query =
       MetadataQuery.from({resource: 'codelist', id: 'CL_FREQ', agency: 'ECB'})

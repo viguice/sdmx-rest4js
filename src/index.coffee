@@ -432,13 +432,13 @@ request2 = (params...) ->
 # with execute().
 #
 # @example Fetches the supplied URL
-#   sdmxrest.request('http://sdw-wsrest.ecb.europa.eu/service/data/EXR')
+#   sdmxrest.request('https://data-api.ecb.europa.eu/service/data/EXR')
 #     .then(function(data) {console.log(data);})
 #     .catch(function(error) {console.log(error);});
 #
 # @example Fetches the supplied URL, asking the service to return a compressed
 # SDMX-JSON message
-#   sdmxrest.request('http://sdw-wsrest.ecb.europa.eu/service/data/EXR',
+#   sdmxrest.request('https://data-api.ecb.europa.eu/service/data/EXR',
 #     {headers: {accept: DataFormat.SDMX_JSON, accept-encoding: "gzip"}})
 #     .then(function(data) {console.log(data);})
 #     .catch(function(error) {console.log(error);});

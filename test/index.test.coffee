@@ -259,7 +259,7 @@ describe 'API', ->
     it 'creates a URL from a metadata query and a service objects', ->
       url = sdmxrest.getUrl {resource: 'codelist', id: 'CL_FREQ'}, 'ECB'
       url.should.be.a 'string'
-      url.should.contain 'sdw-wsrest.ecb.europa.eu'
+      url.should.contain 'data-api.ecb.europa.eu'
       url.should.contain 'codelist'
       url.should.contain 'CL_FREQ'
 
@@ -267,7 +267,7 @@ describe 'API', ->
       q = {'context': 'dataflow', 'agency': 'BIS', 'id': 'CBS'}
       url = sdmxrest.getUrl q, 'ECB'
       url.should.be.a 'string'
-      url.should.contain 'sdw-wsrest.ecb.europa.eu'
+      url.should.contain 'data-api.ecb.europa.eu'
       url.should.contain 'schema'
       url.should.contain 'dataflow/BIS/CBS'
 
@@ -462,7 +462,7 @@ describe 'API', ->
   describe 'when using request()', ->
 
     it 'offers to execute a request from a query and service objects', ->
-      query = nock('http://sdw-wsrest.ecb.europa.eu')
+      query = nock('https://data-api.ecb.europa.eu')
         .get((uri) -> uri.indexOf('EXR') > -1)
         .reply 200, 'OK'
       response =
@@ -470,10 +470,10 @@ describe 'API', ->
       response.should.eventually.equal 'OK'
 
     it 'offers to execute a request from an SDMX RESTful query string (known service)', ->
-      query = nock('http://sdw-wsrest.ecb.europa.eu')
+      query = nock('https://data-api.ecb.europa.eu')
         .get((uri) -> uri.indexOf('EXR') > -1)
         .reply 200, 'OK'
-      response = sdmxrest.request 'http://sdw-wsrest.ecb.europa.eu/service/data/EXR'
+      response = sdmxrest.request 'https://data-api.ecb.europa.eu/service/data/EXR'
       response.should.eventually.equal 'OK'
 
     it 'offers to execute a request from an SDMX RESTful query string (unknown service)', ->
@@ -484,14 +484,14 @@ describe 'API', ->
       response.should.eventually.equal 'OK'
 
     it 'throws an exception in case of issues with a request', ->
-      query = nock('http://sdw-wsrest.ecb.europa.eu')
+      query = nock('https://data-api.ecb.europa.eu')
         .get((uri) -> uri.indexOf('TEST') > -1)
         .reply 404
       response = sdmxrest.request {flow: 'TEST'}, 'ECB'
       response.should.be.rejectedWith RangeError
 
     it 'does not throw an exception for a 404 with updatedAfter', ->
-      query = nock('http://sdw-wsrest.ecb.europa.eu')
+      query = nock('https://data-api.ecb.europa.eu')
         .get((uri) -> uri.indexOf('ICP') > -1)
         .reply 404
       response = sdmxrest.request \
@@ -505,7 +505,7 @@ describe 'API', ->
       response.should.be.rejected
 
     it 'adds an accept header to data queries if the service has a default format', ->
-      query = nock('http://sdw-wsrest.ecb.europa.eu')
+      query = nock('https://data-api.ecb.europa.eu')
         .matchHeader('accept', (h) ->
           h[0].indexOf('application/vnd.sdmx.data+json') > -1)
         .get((uri) -> uri.indexOf('EXR') > -1)
@@ -515,7 +515,7 @@ describe 'API', ->
       response.should.eventually.equal 'OK'
 
     it 'adds an accept header to structure queries if the service has a default format', ->
-      query = nock('http://sdw-wsrest.ecb.europa.eu')
+      query = nock('https://data-api.ecb.europa.eu')
         .matchHeader('accept', (h) ->
           h[0].indexOf('application/vnd.sdmx.structure+xml') > -1)
         .get((uri) -> uri.indexOf('codelist') > -1)
@@ -525,7 +525,7 @@ describe 'API', ->
       response.should.eventually.equal 'OK'
 
     it 'adds an accept header to schema queries if the service has a default format', ->
-      query = nock('http://sdw-wsrest.ecb.europa.eu')
+      query = nock('https://data-api.ecb.europa.eu')
         .matchHeader('accept', (h) ->
           h[0].indexOf('application/xml') > -1)
         .get((uri) -> uri.indexOf('schema') > -1)
@@ -535,17 +535,17 @@ describe 'API', ->
       response.should.eventually.equal 'OK'
 
     it 'adds an accept header to data URLs if the service has a default format', ->
-      query = nock('http://sdw-wsrest.ecb.europa.eu')
+      query = nock('https://data-api.ecb.europa.eu')
         .matchHeader('accept', (h) ->
           h[0].indexOf('application/vnd.sdmx.data+json') > -1)
         .get((uri) -> uri.indexOf('EXR') > -1)
         .reply 200, 'OK'
-      url = 'http://sdw-wsrest.ecb.europa.eu/service/data/EXR/A..EUR.SP00.A'
+      url = 'https://data-api.ecb.europa.eu/service/data/EXR/A..EUR.SP00.A'
       response = sdmxrest.request url
       response.should.eventually.equal 'OK'
 
     it 'does not overwrite the accept header passed by the client (data)', ->
-      query = nock('http://sdw-wsrest.ecb.europa.eu')
+      query = nock('https://data-api.ecb.europa.eu')
         .matchHeader('accept', (h) ->
           h[0].indexOf('application/xml') > -1)
         .get((uri) -> uri.indexOf('EXR') > -1)
@@ -558,7 +558,7 @@ describe 'API', ->
       response.should.eventually.equal 'OK'
 
     it 'does not overwrite the accept header passed by the client (structure)', ->
-      query = nock('http://sdw-wsrest.ecb.europa.eu')
+      query = nock('https://data-api.ecb.europa.eu')
         .matchHeader('accept', (h) ->
           h[0].indexOf('application/vnd.sdmx.structure+json;version=1.0.0') > -1)
         .get((uri) -> uri.indexOf('codelist') > -1)
@@ -571,7 +571,7 @@ describe 'API', ->
       response.should.eventually.equal 'OK'
 
     it 'does not overwrite the accept header passed by the client (schema)', ->
-      query = nock('http://sdw-wsrest.ecb.europa.eu')
+      query = nock('https://data-api.ecb.europa.eu')
         .matchHeader('accept', (h) ->
           h[0].indexOf('application/vnd.sdmx.structure+xml;version=2.1') > -1)
         .get((uri) -> uri.indexOf('schema') > -1)
@@ -611,7 +611,7 @@ describe 'API', ->
       response.should.eventually.equal 'OK'
 
     it 'adds a default user agent to queries', ->
-      query = nock('http://sdw-wsrest.ecb.europa.eu')
+      query = nock('https://data-api.ecb.europa.eu')
         .matchHeader('user-agent', (h) ->
           h[0] is 'sdmx-rest4js (https://github.com/sosna/sdmx-rest4js)')
         .get((uri) -> uri.indexOf('EXR') > -1)
@@ -621,7 +621,7 @@ describe 'API', ->
       response.should.eventually.equal 'OK'
 
     it 'does not overwrite the user agent passed by the client', ->
-      query = nock('http://sdw-wsrest.ecb.europa.eu')
+      query = nock('https://data-api.ecb.europa.eu')
         .matchHeader('user-agent', (h) -> h[0] is 'test')
         .get((uri) -> uri.indexOf('EXR') > -1)
         .reply 200, 'OK'
@@ -633,7 +633,7 @@ describe 'API', ->
       response.should.eventually.equal 'OK'
 
     it 'adds a default accept-encoding header to queries', ->
-      query = nock('http://sdw-wsrest.ecb.europa.eu')
+      query = nock('https://data-api.ecb.europa.eu')
         .matchHeader('accept-encoding', (h) -> h[0] is 'gzip,deflate')
         .get((uri) -> uri.indexOf('EXR') > -1)
         .reply 200, 'OK'
@@ -642,7 +642,7 @@ describe 'API', ->
       response.should.eventually.equal 'OK'
 
     it 'allows disabling content compression', ->
-      query = nock('http://sdw-wsrest.ecb.europa.eu')
+      query = nock('https://data-api.ecb.europa.eu')
         .matchHeader('accept-encoding', (h) -> h is undefined)
         .get((uri) -> uri.indexOf('EXR') > -1)
         .reply 200, 'OK'
@@ -654,7 +654,7 @@ describe 'API', ->
 
   describe 'when using request2()', ->
     it 'offers a way to retrieve response headers', ->
-      query = nock('http://sdw-wsrest.ecb.europa.eu')
+      query = nock('https://data-api.ecb.europa.eu')
         .get((uri) -> uri.indexOf('EXR') > -1)
         .reply 200, 'OK', {'X-My-Headers': 'My Header value'}
 
@@ -674,7 +674,7 @@ describe 'API', ->
       should.Throw(test, ReferenceError, 'Not a valid response')
 
     it 'accept codes in the 300 range', ->
-      query = nock('http://sdw-wsrest.ecb.europa.eu')
+      query = nock('https://data-api.ecb.europa.eu')
         .get((uri) -> uri.indexOf('TEST') > -1)
         .reply 306, 'Redirected'
       request = sdmxrest.getDataQuery({flow: 'TEST'})
@@ -684,7 +684,7 @@ describe 'API', ->
       )
 
     it 'accept code 100', ->
-      nock('http://sdw-wsrest.ecb.europa.eu')
+      nock('https://data-api.ecb.europa.eu')
         .get((uri) -> uri.indexOf('TEST') > -1)
         .reply 100, 'Continue'
       request = sdmxrest.getDataQuery({flow: 'TEST'})
@@ -696,7 +696,7 @@ describe 'API', ->
   describe 'when using checkMediaType()', ->
     it 'accepts SDMX data formats', ->
       fmt = 'application/vnd.sdmx.data+json;version=1.0.0'
-      nock('http://sdw-wsrest.ecb.europa.eu')
+      nock('https://data-api.ecb.europa.eu')
         .get((uri) -> uri.indexOf('EXR') > -1)
         .reply 200, 'OK', {'Content-Type': fmt}
       sdmxrest.request2({flow: 'EXR', key: 'A.CHF.EUR.SP00.A'}, 'ECB').then((response) ->
@@ -706,7 +706,7 @@ describe 'API', ->
 
     it 'accepts SDMX metadata formats', ->
       fmt = 'application/vnd.sdmx.structure+xml;version=2.1'
-      nock('http://sdw-wsrest.ecb.europa.eu')
+      nock('https://data-api.ecb.europa.eu')
         .get((uri) -> uri.indexOf('codelist') > -1)
         .reply 200, 'OK', {'Content-Type': fmt}
       sdmxrest.request2({resource: 'codelist'}, 'ECB').then((response) ->
@@ -716,7 +716,7 @@ describe 'API', ->
 
     it 'accepts generic formats', ->
       fmt = 'application/xml'
-      nock('http://sdw-wsrest.ecb.europa.eu')
+      nock('https://data-api.ecb.europa.eu')
         .get((uri) -> uri.indexOf('codelist') > -1)
         .reply 200, 'OK', {'Content-Type': fmt}
       sdmxrest.request2({resource: 'codelist'}, 'ECB').then((response) ->
@@ -726,7 +726,7 @@ describe 'API', ->
 
     it 'throws an error in case the format is not an SDMX one', ->
       fmt = 'application/vnd.test.data+json'
-      nock('http://sdw-wsrest.ecb.europa.eu')
+      nock('https://data-api.ecb.europa.eu')
         .get((uri) -> uri.indexOf('EXR') > -1)
         .reply 200, 'OK', {'Content-Type': fmt}
       sdmxrest.request2({flow: 'EXR'}, 'ECB').then((response) ->
@@ -735,7 +735,7 @@ describe 'API', ->
 
     it 'throws an error in case no format is specified', ->
       fmt = 'application/xml'
-      nock('http://sdw-wsrest.ecb.europa.eu')
+      nock('https://data-api.ecb.europa.eu')
         .get((uri) -> uri.indexOf('EXR') > -1)
         .reply 200, 'OK'
       sdmxrest.request2({flow: 'EXR'}, 'ECB').then((response) ->
@@ -744,7 +744,7 @@ describe 'API', ->
 
     it 'throws an error in case the format is not the requested one', ->
       fmt = 'application/vnd.sdmx.data+json;version=1.0.0'
-      nock('http://sdw-wsrest.ecb.europa.eu')
+      nock('https://data-api.ecb.europa.eu')
         .get((uri) -> uri.indexOf('EXR') > -1)
         .reply 200, 'OK', {'Content-Type': 'application/xml'}
       opts =
@@ -756,7 +756,7 @@ describe 'API', ->
 
     it 'Does not throw an error in case the received format is the requested one', ->
       fmt = 'application/vnd.sdmx.data+json;version=1.0.0'
-      nock('http://sdw-wsrest.ecb.europa.eu')
+      nock('https://data-api.ecb.europa.eu')
         .get((uri) -> uri.indexOf('EXR') > -1)
         .reply 200, 'OK', {'Content-Type': fmt}
       opts =
@@ -769,7 +769,7 @@ describe 'API', ->
     it 'Does not throw an error in case the only difference is the space character', ->
       fmt1 = 'application/vnd.sdmx.genericdata+xml;version=2.1'
       fmt2 = 'application/vnd.sdmx.genericdata+xml; version=2.1'
-      nock('http://sdw-wsrest.ecb.europa.eu')
+      nock('https://data-api.ecb.europa.eu')
         .get((uri) -> uri.indexOf('EXR') > -1)
         .reply 200, 'OK', {'Content-Type': fmt2}
       opts =
@@ -781,7 +781,7 @@ describe 'API', ->
 
     it 'Does not throw an error in case the received format is one of the requested ones', ->
       fmt = 'application/vnd.sdmx.data+json;version=1.0.0, application/json;q=0.9, text/csv;q=0.5, */*;q=0.4'
-      nock('http://sdw-wsrest.ecb.europa.eu')
+      nock('https://data-api.ecb.europa.eu')
         .get((uri) -> uri.indexOf('EXR') > -1)
         .reply 200, 'OK', {'Content-Type': 'text/csv'}
       opts =
@@ -793,7 +793,7 @@ describe 'API', ->
 
     it 'Throws an error in case the received format is not one of the requested ones', ->
       fmt = 'application/vnd.sdmx.data+json;version=1.0.0, application/json;q=0.9, text/csv;q=0.5, */*;q=0.4'
-      nock('http://sdw-wsrest.ecb.europa.eu')
+      nock('https://data-api.ecb.europa.eu')
         .get((uri) -> uri.indexOf('EXR') > -1)
         .reply 200, 'OK', {'Content-Type': 'application/xml'}
       opts =

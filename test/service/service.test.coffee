@@ -69,7 +69,6 @@ describe 'Service', ->
     it 'offers access to predefined services', ->
       i = [
         'ECB'
-        'ECB_S'
         'SDMXGR'
         'SDMXGR_S'
         'EUROSTAT'
@@ -101,15 +100,11 @@ describe 'Service', ->
 
     it 'offers access to secure instances of predefined services', ->
       s1 = Service.ECB
-      s2 = Service.ECB_S
       s1.should.be.an 'object'
-      s2.should.be.an 'object'
       s1.should.have.property('id').that.equals 'ECB'
-      s2.should.have.property('id').that.equals 'ECB'
       s1.should.have.property('name').that.equals s2.name
       s1.should.have.property('api').that.equals s2.api
-      s1.should.have.property('url').that.contains 'http://'
-      s2.should.have.property('url').that.contains 'https://'
+      s1.should.have.property('url').that.contains 'https://'
 
 describe 'Services', ->
 
@@ -118,4 +113,4 @@ describe 'Services', ->
     services.should.have.property('length').that.is.gte 5
 
   it 'should contain a few known services', ->
-    services.should.include.members([Service.ECB_S, Service.SDMXGR_S])
+    services.should.include.members([Service.ECB, Service.SDMXGR_S])

@@ -11,7 +11,7 @@ should = require('chai').should()
 describe 'URL Generator for schema queries', ->
 
   it 'generates a URL for a schema query', ->
-    expected = "http://sdw-wsrest.ecb.europa.eu/service/schema/dataflow\
+    expected = "https://data-api.ecb.europa.eu/service/schema/dataflow\
     /ECB/EXR/1.0?explicitMeasure=false"
     query = SchemaQuery.from({context: 'dataflow', id: 'EXR', agency: 'ECB', version: '1.0'})
     service = Service.ECB
@@ -19,7 +19,7 @@ describe 'URL Generator for schema queries', ->
     url.should.equal expected
 
   it 'generates a URL for a schema query (with dimensionAtObservation)', ->
-    expected = "http://sdw-wsrest.ecb.europa.eu/service/schema/dataflow\
+    expected = "https://data-api.ecb.europa.eu/service/schema/dataflow\
     /ECB/EXR/latest?explicitMeasure=false&dimensionAtObservation=TEST"
     query = SchemaQuery.from(
       {context: 'dataflow', id: 'EXR', agency: 'ECB', obsDimension: 'TEST'})
