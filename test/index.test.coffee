@@ -55,7 +55,7 @@ describe 'API', ->
       service.should.be.an 'object'
       service.should.have.property('id').that.equals 'ECB'
       service.should.have.property('name').that.equals 'European Central Bank'
-      service.should.have.property('url').that.contains 'sdw-wsrest'
+      service.should.have.property('url').that.contains 'data-api'
       service.should.have.property('api').that.is.not.undefined
 
     it 'offers to create services from properties', ->
@@ -92,7 +92,7 @@ describe 'API', ->
       sdmxrest.services.should.have.property('length').that.is.gte 5
 
     it 'should contain known services', ->
-      sdmxrest.services.should.include.members([sdmxrest.getService 'ECB_S'])
+      sdmxrest.services.should.include.members([sdmxrest.getService 'ECB'])
 
   describe 'when using getDataQuery()', ->
 
@@ -500,7 +500,7 @@ describe 'API', ->
       response.should.not.be.rejected
 
     it 'throws an exception when the Service URL is invalid', ->
-      response = sdmxrest.request {flow: 'ICP'}, {url: 'ws.test'}
+      response = sdmxrest.request {flow: 'ICP'}, {url: 'http://ws.test'}
       response.should.not.be.fulfilled
       response.should.be.rejected
 

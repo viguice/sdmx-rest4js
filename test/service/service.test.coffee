@@ -29,9 +29,9 @@ describe 'Service', ->
     service.should.have.property('id').that.is.undefined
     service.should.have.property('name').that.is.undefined
     service.should.have.property('url').that.equals url
-    service.should.have.property('format').that.is.undefined
-    service.should.have.property('structureFormat').that.is.undefined
-    service.should.have.property('schemaFormat').that.is.undefined
+    service.should.have.property('format').that.equals '*/*'
+    service.should.have.property('structureFormat').that.equals '*/*'
+    service.should.have.property('schemaFormat').that.equals '*/*'
 
   context 'when passing an object', ->
 
@@ -70,7 +70,6 @@ describe 'Service', ->
       i = [
         'ECB'
         'SDMXGR'
-        'SDMXGR_S'
         'EUROSTAT'
         'OECD'
         'OECD_S'
@@ -99,12 +98,16 @@ describe 'Service', ->
       Service['ECB'].should.have.property('schemaFormat').that.equals format
 
     it 'offers access to secure instances of predefined services', ->
-      s1 = Service.ECB
+      s1 = Service.OECD
+      s2 = Service.OECD_S
       s1.should.be.an 'object'
-      s1.should.have.property('id').that.equals 'ECB'
+      s2.should.be.an 'object'
+      s1.should.have.property('id').that.equals 'OECD'
+      s2.should.have.property('id').that.equals 'OECD'
       s1.should.have.property('name').that.equals s2.name
       s1.should.have.property('api').that.equals s2.api
-      s1.should.have.property('url').that.contains 'https://'
+      s1.should.have.property('url').that.contains 'http://'
+      s2.should.have.property('url').that.contains 'https://'
 
 describe 'Services', ->
 
@@ -113,4 +116,4 @@ describe 'Services', ->
     services.should.have.property('length').that.is.gte 5
 
   it 'should contain a few known services', ->
-    services.should.include.members([Service.ECB, Service.SDMXGR_S])
+    services.should.include.members([Service.ECB, Service.OECD_S])

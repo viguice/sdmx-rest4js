@@ -4,5 +4,9 @@ npm-debug.log
 coverage
 .idea
 *.swp
+*.js
+*.map
 sdmx-rest4js.code-workspace
 .nyc_output
+package.json
+package-lock.json

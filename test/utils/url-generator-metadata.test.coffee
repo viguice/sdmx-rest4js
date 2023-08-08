@@ -8,6 +8,15 @@ should = require('chai').should()
 describe 'URL Generator for metadata queries', ->
 
   it 'generates a URL for a metadata query', ->
+    expected = "https://registry.sdmx.org/sdmx/v2/structure/codelist/SDMX/CL_FREQ/\
+    latest?detail=full&references=none"
+    query =
+      MetadataQuery.from({resource: 'codelist', id: 'CL_FREQ', agency: 'SDMX'})
+    service = Service.SDMXGR
+    url = new UrlGenerator().getUrl(query, service)
+    url.should.equal expected
+
+  it 'generates a URL for a metadata query', ->
     expected = "https://data-api.ecb.europa.eu/service/codelist/ECB/CL_FREQ/\
     latest?detail=full&references=none"
     query =

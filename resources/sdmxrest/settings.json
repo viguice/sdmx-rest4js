@@ -1,0 +1,76 @@
+{
+  "description": "SDMX REST API client for JavaScript",
+  "version": "2.21.0_test",
+  "services": [
+    {
+      "id": "BIS",
+      "name": "Bank for International Settlements",
+      "url": "https://stats.bis.org/api/v1",
+      "api": "v1.4.0",
+      "format": "application/vnd.sdmx.data+json;version=1.0.0",
+      "structureFormat": "application/vnd.sdmx.structure+json;version=1.0.0",
+      "schemaFormat": "application/xml",
+      "external": true
+    },
+    {
+      "id": "ECB",
+      "name": "European Central Bank",
+      "url": "https://data-api.ecb.europa.eu/service",
+      "api": "v1.4.0",
+      "format": "application/vnd.sdmx.data+json;version=1.0.0-wd",
+      "structureFormat": "application/vnd.sdmx.structure+xml;version=2.1",
+      "schemaFormat": "application/xml",
+      "external": true
+    },
+    {
+      "id": "UNICEF",
+      "name": "UNICEF",
+      "url": "https://sdmx.data.unicef.org/ws/public/sdmxapi/rest",
+      "api": "v1.4.0",
+      "format": "application/vnd.sdmx.data+json;version=1.0.0",
+      "structureFormat": "application/vnd.sdmx.structure+json;version=1.0.0",
+      "schemaFormat": "*/*",
+      "external": true
+    },
+    {
+      "id": "SDMXGR",
+      "name": "SDMX Global Registry",
+      "url": "https://registry.sdmx.org/sdmx/v2",
+      "api": "v2.0.0",
+      "format": "*/*",
+      "structureFormat": "*/*",
+      "schemaFormat": "*/*",
+      "external": true
+    },
+    {
+      "id": "EUROSTAT",
+      "name": "Eurostat",
+      "url": "https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1",
+      "api": "v2.0.0",
+      "format": "*/*",
+      "structureFormat": "*/*",
+      "schemaFormat": "*/*",
+      "external": true
+    },
+    {
+      "id": "WB",
+      "name": "World Bank",
+      "url": "http://wits.worldbank.org/API/V1/SDMX/V21/rest",
+      "api": "v1.0.2",
+      "format": "*/*",
+      "structureFormat": "*/*",
+      "schemaFormat": "*/*",
+      "external": true
+    },
+    {
+      "id": "OECD",
+      "name": "Organisation for Economic Co-operation and Development",
+      "url": "https://stats.oecd.org/SDMX-JSON",
+      "api": "v1.0.2",
+      "format": "*/*",
+      "structureFormat": "*/*",
+      "schemaFormat": "*/*",
+      "external": true
+    }
+  ]
+}

@@ -20,6 +20,7 @@
 {ApiVersion} = require './utils/api-version'
 {ApiResources} = require './utils/api-version'
 SdmxPatterns = require './utils/sdmx-patterns'
+{saveSettings} = require './utils/app-settings'
 promise = require 'es6-promise'
 promise.polyfill()
 fetch = require 'isomorphic-fetch'
@@ -30,7 +31,7 @@ checkStatus = (query, response) ->
   throw ReferenceError 'Not a valid response' unless response
   code  = response.status
   unless 100 <= code < 400 or (code is 404 and query.updatedAfter)
-    throw RangeError "Request failed with error code #{code}"
+    throw RangeError "Request (#{response.url}) failed with error code #{code}"
 
 isFormat = (input, expected) ->
   out = false
@@ -74,12 +75,12 @@ addHeaders = (opts, s, type) ->
   opts ?= {}
   headers = {}
   headers[key.toLowerCase()] = opts.headers[key] for own key of opts.headers
-  unless headers.accept
+  unless headers.accept?
     headers.accept = switch type
       when 'data' then s.format
       when 'structure' then s.structureFormat
       when 'schema' then s.schemaFormat
-  headers.accept = '*/*' unless headers.accept
+  # headers.accept = '*/*' unless headers.accept
   headers['user-agent'] = userAgent unless headers['user-agent']
   opts.headers = headers
   opts
@@ -111,6 +112,11 @@ guessService = (u) ->
 # - *id* (optional) - an identifier for the web service
 # - *name* (optional) - a label for the web service
 #
+# The predefined services are stored in resources/sdmxrest/settings.json file.
+# The file is editable for adding new predefined services. Stop and restart for
+#   taking the change into account.
+# Delete the settings.json file to reset to default settings.
+#
 # @param [Object|String] input the ID of a predefined service or an object with
 #   the information about the service to be instantiated
 #
@@ -125,9 +131,39 @@ getService = (input) ->
     Service[input]
   else if input instanceof Object and \
   Object.prototype.toString.call(input) is '[object Object]'
-    Service.from input
+    Service.from input, false
+
+
   else
     throw TypeError "Invalid type of #{input}. Expected an object or a string"
+
+#
+# Set an SDMX 2.1 RESTful web service against which queries can be executed and
+# stores as a new predefined service.
+# This library offers a few predefined services, which you can access using the
+# service identifier.
+#
+# @example Create a new predefined service
+#   sdmxrest.getService('MYSOURCE',{url: 'http://ws-entry-point'})
+#
+# The expected properties for the object are:
+# - *url* - the entry point of the SDMX 2.1 RESTful web service
+# - *name* (optional) - a label for the web service
+# - *api* (optional) - the version of the SDMX 2.1 RESTful API supported by
+#   the service. If not supplied, it will default to the most recent version of
+#   the SDMX RESTful API
+#
+
+setService = (id,input) ->
+  if input instanceof Object and \
+  Object.prototype.toString.call(input) is '[object Object]'
+    if  typeof id is 'string'
+      Service.from input, true
+    else
+      throw TypeError "Invalid type of #{id}. Id expected to be a string"
+  else
+    throw TypeError "Invalid type of #{input}. Input expected to be an object"
+
 
 #
 # Get an SDMX 2.1 RESTful data query.
@@ -461,8 +497,10 @@ request = (params...) ->
     checkStatus params[0], response
     response.text())
 
+
 module.exports =
   getService: getService
+  setService: setService
   services: services
   getDataQuery: getDataQuery
   getDataQuery2: getDataQuery2
